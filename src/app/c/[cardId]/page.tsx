@@ -15,6 +15,9 @@ export default async function Page({
     return null;
   }
 
+  /*
+    Fetch card and joined profile
+  */
   const { data: card, error: cardError } = await supabase
     .from("cards")
     .select(`
@@ -31,7 +34,11 @@ export default async function Page({
     .eq("card_id", cardId)
     .maybeSingle();
 
-  if (cardError || !card || !card.profiles || card.profiles.length === 0) {
+  /*
+    Handle missing card or profile safely
+  */
+  if (cardError || !card || !card.profiles) {
+
     return (
       <div
         style={{
@@ -47,12 +54,46 @@ export default async function Page({
         Card not found
       </div>
     );
+
   }
 
-  // FIX: profiles is an array
-  const profile = card.profiles[0];
+  /*
+    Normalize Supabase relational response
+    Supabase may return either:
+    profiles: Profile
+    OR
+    profiles: Profile[]
+  */
+  const profile = Array.isArray(card.profiles)
+    ? card.profiles[0]
+    : card.profiles;
 
-  const { data: links } = await supabase
+  /*
+    Final safety guard
+  */
+  if (!profile) {
+
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#1c1c1e",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#999",
+        }}
+      >
+        Profile missing
+      </div>
+    );
+
+  }
+
+  /*
+    Fetch personal links
+  */
+  const { data: links, error: linksError } = await supabase
     .from("links")
     .select(`
       id,
@@ -64,7 +105,10 @@ export default async function Page({
     .eq("profile_id", profile.id)
     .order("sort_order", { ascending: true });
 
-  const { data: organizationLinks } = await supabase
+  /*
+    Fetch organization links
+  */
+  const { data: organizationLinks, error: orgError } = await supabase
     .from("organization_links")
     .select(`
       id,
@@ -76,7 +120,11 @@ export default async function Page({
     .eq("organization_id", profile.organization_id)
     .order("sort_order", { ascending: true });
 
+  /*
+    Render card
+  */
   return (
+
     <div
       style={{
         minHeight: "100vh",
@@ -86,11 +134,15 @@ export default async function Page({
         background: "#1c1c1e",
       }}
     >
+
       <ProfileCard
         profile={profile}
         links={links ?? []}
         organizationLinks={organizationLinks ?? []}
       />
+
     </div>
+
   );
+
 }
