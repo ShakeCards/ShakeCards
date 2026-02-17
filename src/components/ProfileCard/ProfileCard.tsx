@@ -6,6 +6,14 @@ export default function ProfileCard({
   organizationLinks,
 }: any) {
 
+  // Critical guard — prevents build crashes
+  if (!profile) {
+    return null;
+  }
+
+  const safeLinks = links ?? [];
+  const safeOrgLinks = organizationLinks ?? [];
+
   return (
 
     <div className={styles.wrapper}>
@@ -14,8 +22,8 @@ export default function ProfileCard({
 
         {/* Banner */}
         <div className={styles.cover}>
-          {profile.banner_image_url && (
-            <img src={profile.banner_image_url} />
+          {profile?.banner_image_url && (
+            <img src={profile.banner_image_url} alt="" />
           )}
         </div>
 
@@ -26,18 +34,18 @@ export default function ProfileCard({
           <div className={styles.header}>
 
             <div className={styles.avatar}>
-              {profile.profile_image_url && (
-                <img src={profile.profile_image_url} />
+              {profile?.profile_image_url && (
+                <img src={profile.profile_image_url} alt="" />
               )}
             </div>
 
             <div className={styles.textBlock}>
 
               <div className={styles.title}>
-                {profile.full_name}
+                {profile?.full_name}
               </div>
 
-              {profile.tagline && (
+              {profile?.tagline && (
                 <div className={styles.tagline}>
                   {profile.tagline}
                 </div>
@@ -50,7 +58,7 @@ export default function ProfileCard({
           {/* Personal Links */}
           <div className={styles.links}>
 
-            {links.map((link: any) => (
+            {safeLinks.map((link: any) => (
 
               <a
                 key={link.id}
@@ -60,32 +68,28 @@ export default function ProfileCard({
               >
 
                 <div className={styles.left}>
-                  <div className={styles.icon}>
-                    •
-                  </div>
+                  <div className={styles.icon}>•</div>
 
                   <div className={styles.label}>
                     {link.label}
                   </div>
                 </div>
 
-                <div className={styles.arrow}>
-                  →
-                </div>
+                <div className={styles.arrow}>→</div>
 
               </a>
 
             ))}
 
-            {/* Program Section */}
-            {organizationLinks.length > 0 && (
+            {/* Program Links */}
+            {safeOrgLinks.length > 0 && (
 
               <>
                 <div className={styles.sectionLabel}>
                   SoLa Live Accelerator
                 </div>
 
-                {organizationLinks.map((link: any) => (
+                {safeOrgLinks.map((link: any) => (
 
                   <a
                     key={link.id}
@@ -95,18 +99,14 @@ export default function ProfileCard({
                   >
 
                     <div className={styles.left}>
-                      <div className={styles.icon}>
-                        •
-                      </div>
+                      <div className={styles.icon}>•</div>
 
                       <div className={styles.label}>
                         {link.label}
                       </div>
                     </div>
 
-                    <div className={styles.arrow}>
-                      →
-                    </div>
+                    <div className={styles.arrow}>→</div>
 
                   </a>
 
