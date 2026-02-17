@@ -3,6 +3,15 @@ import ProfileCard from "@/components/ProfileCard/ProfileCard";
 
 type Params = Promise<{ cardId: string }>;
 
+type Profile = {
+  id: string;
+  full_name: string | null;
+  tagline: string | null;
+  profile_image_url: string | null;
+  banner_image_url: string | null;
+  organization_id: string | null;
+};
+
 export default async function Page({
   params,
 }: {
@@ -35,14 +44,14 @@ export default async function Page({
     .maybeSingle();
 
   /*
-    Handle missing card or profile safely
+    Handle missing card
   */
   if (cardError || !card || !card.profiles) {
 
     return (
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100dvh",
           background: "#1c1c1e",
           display: "flex",
           alignItems: "center",
@@ -58,25 +67,21 @@ export default async function Page({
   }
 
   /*
-    Normalize Supabase relational response
-    Supabase may return either:
-    profiles: Profile
-    OR
-    profiles: Profile[]
+    Normalize relational response safely
   */
-  const profile = Array.isArray(card.profiles)
-    ? card.profiles[0]
+  const profile: Profile | null = Array.isArray(card.profiles)
+    ? card.profiles[0] ?? null
     : card.profiles;
 
   /*
-    Final safety guard
+    Final guard
   */
   if (!profile) {
 
     return (
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100dvh",
           background: "#1c1c1e",
           display: "flex",
           alignItems: "center",
@@ -93,7 +98,7 @@ export default async function Page({
   /*
     Fetch personal links
   */
-  const { data: links, error: linksError } = await supabase
+  const { data: links } = await supabase
     .from("links")
     .select(`
       id,
@@ -108,7 +113,7 @@ export default async function Page({
   /*
     Fetch organization links
   */
-  const { data: organizationLinks, error: orgError } = await supabase
+  const { data: organizationLinks } = await supabase
     .from("organization_links")
     .select(`
       id,
@@ -127,11 +132,12 @@ export default async function Page({
 
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "100dvh",
         display: "flex",
-        alignItems: "center",
         justifyContent: "center",
         background: "#1c1c1e",
+        paddingTop: "40px",
+        paddingBottom: "40px",
       }}
     >
 
