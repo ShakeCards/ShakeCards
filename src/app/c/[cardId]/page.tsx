@@ -31,7 +31,7 @@ export default async function Page({
     .eq("card_id", cardId)
     .maybeSingle();
 
-  if (cardError || !card || !card.profiles) {
+  if (cardError || !card || !card.profiles || card.profiles.length === 0) {
     return (
       <div
         style={{
@@ -49,7 +49,8 @@ export default async function Page({
     );
   }
 
-  const profile = card.profiles;
+  // FIX: profiles is an array
+  const profile = card.profiles[0];
 
   const { data: links } = await supabase
     .from("links")
