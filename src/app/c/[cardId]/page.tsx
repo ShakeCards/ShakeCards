@@ -1,44 +1,95 @@
 import { supabase } from "@/lib/supabase";
 import ProfileCard from "@/components/ProfileCard/ProfileCard";
 
+type Params = Promise<{ cardId: string }>;
+
 export default async function Page({
   params,
 }: {
-  params: Promise<{ cardId: string }>;
+  params: Params;
 }) {
 
   const { cardId } = await params;
 
-  const { data: card } = await supabase
+  if (!cardId) {
+    return null;
+  }
+
+  const { data: card, error: cardError } = await supabase
     .from("cards")
     .select(`
-      *,
-      profiles (*)
+      card_id,
+      profiles (
+        id,
+        full_name,
+        tagline,
+        profile_image_url,
+        banner_image_url,
+        organization_id
+      )
     `)
     .eq("card_id", cardId)
-    .single();
+    .maybeSingle();
 
-  if (!card) return <div>Card not found</div>;
+  if (cardError || !card || !card.profiles) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#1c1c1e",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#999",
+          fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
+        }}
+      >
+        Card not found
+      </div>
+    );
+  }
 
   const profile = card.profiles;
 
   const { data: links } = await supabase
     .from("links")
-    .select("*")
+    .select(`
+      id,
+      label,
+      url,
+      icon,
+      sort_order
+    `)
     .eq("profile_id", profile.id)
-    .order("sort_order");
+    .order("sort_order", { ascending: true });
 
-  const { data: orgLinks } = await supabase
+  const { data: organizationLinks } = await supabase
     .from("organization_links")
-    .select("*")
+    .select(`
+      id,
+      label,
+      url,
+      icon,
+      sort_order
+    `)
     .eq("organization_id", profile.organization_id)
-    .order("sort_order");
+    .order("sort_order", { ascending: true });
 
   return (
-    <ProfileCard
-      profile={profile}
-      links={links ?? []}
-      organizationLinks={orgLinks ?? []}
-    />
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#1c1c1e",
+      }}
+    >
+      <ProfileCard
+        profile={profile}
+        links={links ?? []}
+        organizationLinks={organizationLinks ?? []}
+      />
+    </div>
   );
 }
