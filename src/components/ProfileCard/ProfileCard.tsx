@@ -1,5 +1,7 @@
 import styles from "./ProfileCard.module.css";
 
+import { Profile } from "@/types/profile";
+
 import {
   Mail,
   Phone,
@@ -16,13 +18,6 @@ type Link = {
   url: string;
   label: string;
   icon?: string;
-};
-
-type Profile = {
-  full_name?: string | null;
-  tagline?: string | null;
-  profile_image_url?: string | null;
-  banner_image_url?: string | null;
 };
 
 type Props = {
