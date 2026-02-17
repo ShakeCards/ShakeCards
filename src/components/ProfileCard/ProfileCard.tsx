@@ -19,10 +19,10 @@ type Link = {
 };
 
 type Profile = {
-  full_name?: string;
-  tagline?: string;
-  profile_image_url?: string;
-  banner_image_url?: string;
+  full_name?: string | null;
+  tagline?: string | null;
+  profile_image_url?: string | null;
+  banner_image_url?: string | null;
 };
 
 type Props = {
@@ -39,9 +39,6 @@ export default function ProfileCard({
 
   if (!profile) return null;
 
-  /*
-    Frontend-only additional links
-  */
   const extraLinks: Link[] = [
     {
       id: "buy-tickets",
@@ -63,18 +60,12 @@ export default function ProfileCard({
     },
   ];
 
-  /*
-    Final merged links
-  */
   const allLinks = [
     ...links,
     ...organizationLinks,
     ...extraLinks,
   ];
 
-  /*
-    Lucide icon renderer
-  */
   function renderIcon(icon?: string) {
 
     const size = 18;
@@ -113,36 +104,30 @@ export default function ProfileCard({
   return (
     <div className={styles.viewport}>
 
-      {/* NEW: scale wrapper for responsive scaling */}
       <div className={styles.scaleWrapper}>
 
         <div className={styles.card}>
 
-          {/* Banner */}
           <div className={styles.banner}>
             {profile.banner_image_url && (
               <img src={profile.banner_image_url} alt="" />
             )}
           </div>
 
-          {/* Avatar */}
           <div className={styles.avatar}>
             {profile.profile_image_url && (
               <img src={profile.profile_image_url} alt="" />
             )}
           </div>
 
-          {/* Name */}
           <div className={styles.name}>
             {profile.full_name}
           </div>
 
-          {/* Role */}
           <div className={styles.role}>
             {profile.tagline}
           </div>
 
-          {/* Links */}
           <div className={styles.links}>
 
             {allLinks.map(link => (
