@@ -12,6 +12,25 @@
 
   background: #1c1c1e;
 
+  padding: 16px;
+
+  overflow: hidden;
+
+}
+
+
+/* SCALE WRAPPER */
+
+.scaleWrapper {
+
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
 }
 
 
@@ -30,6 +49,12 @@
   position: relative;
 
   overflow: hidden;
+
+  max-width: 100%;
+
+  transform-origin: top center;
+
+  will-change: transform;
 
 }
 
@@ -210,5 +235,43 @@
 .linkLabel {
 
   font-size: 14px;
+
+}
+
+
+/* RESPONSIVE SCALING */
+
+@media (max-width: 420px) {
+
+  .scaleWrapper {
+
+    height: calc(688px * ((100vw - 32px) / 400));
+
+  }
+
+  .card {
+
+    transform: scale(calc((100vw - 32px) / 400));
+
+  }
+
+}
+
+
+/* EXTRA SMALL DEVICES */
+
+@media (max-width: 340px) {
+
+  .scaleWrapper {
+
+    height: calc(688px * ((100vw - 24px) / 400));
+
+  }
+
+  .card {
+
+    transform: scale(calc((100vw - 24px) / 400));
+
+  }
 
 }

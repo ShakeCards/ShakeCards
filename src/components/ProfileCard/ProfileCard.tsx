@@ -41,7 +41,6 @@ export default function ProfileCard({
 
   /*
     Frontend-only additional links
-    These preserve backend integration while allowing design testing
   */
   const extraLinks: Link[] = [
     {
@@ -66,7 +65,6 @@ export default function ProfileCard({
 
   /*
     Final merged links
-    Supabase links remain primary source
   */
   const allLinks = [
     ...links,
@@ -115,60 +113,65 @@ export default function ProfileCard({
   return (
     <div className={styles.viewport}>
 
-      <div className={styles.card}>
+      {/* NEW: scale wrapper for responsive scaling */}
+      <div className={styles.scaleWrapper}>
 
-        {/* Banner */}
-        <div className={styles.banner}>
-          {profile.banner_image_url && (
-            <img src={profile.banner_image_url} alt="" />
-          )}
-        </div>
+        <div className={styles.card}>
 
-        {/* Avatar */}
-        <div className={styles.avatar}>
-          {profile.profile_image_url && (
-            <img src={profile.profile_image_url} alt="" />
-          )}
-        </div>
+          {/* Banner */}
+          <div className={styles.banner}>
+            {profile.banner_image_url && (
+              <img src={profile.banner_image_url} alt="" />
+            )}
+          </div>
 
-        {/* Name */}
-        <div className={styles.name}>
-          {profile.full_name}
-        </div>
+          {/* Avatar */}
+          <div className={styles.avatar}>
+            {profile.profile_image_url && (
+              <img src={profile.profile_image_url} alt="" />
+            )}
+          </div>
 
-        {/* Role */}
-        <div className={styles.role}>
-          {profile.tagline}
-        </div>
+          {/* Name */}
+          <div className={styles.name}>
+            {profile.full_name}
+          </div>
 
-        {/* Links */}
-        <div className={styles.links}>
+          {/* Role */}
+          <div className={styles.role}>
+            {profile.tagline}
+          </div>
 
-          {allLinks.map(link => (
+          {/* Links */}
+          <div className={styles.links}>
 
-            <a
-              key={link.id}
-              href={link.url}
-              className={styles.link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            {allLinks.map(link => (
 
-              <div className={styles.linkLeft}>
+              <a
+                key={link.id}
+                href={link.url}
+                className={styles.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
 
-                <div className={styles.icon}>
-                  {renderIcon(link.icon)}
+                <div className={styles.linkLeft}>
+
+                  <div className={styles.icon}>
+                    {renderIcon(link.icon)}
+                  </div>
+
+                  <div className={styles.linkLabel}>
+                    {link.label}
+                  </div>
+
                 </div>
 
-                <div className={styles.linkLabel}>
-                  {link.label}
-                </div>
+              </a>
 
-              </div>
+            ))}
 
-            </a>
-
-          ))}
+          </div>
 
         </div>
 
