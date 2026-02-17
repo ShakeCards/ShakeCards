@@ -2,11 +2,8 @@
 
 .viewport {
 
-  position: fixed;       /* CRITICAL FIX: prevents scroll */
-  inset: 0;
-
-  width: 100vw;
   height: 100dvh;
+  width: 100vw;
 
   display: flex;
 
@@ -42,8 +39,7 @@
 .card {
 
   width: 400px;
-
-  height: 688px; /* FIX: use height instead of min-height */
+  height: 688px;
 
   background: #ffffff;
 
@@ -53,7 +49,7 @@
 
   overflow: hidden;
 
-  transform-origin: top center;
+  transform-origin: center center;
 
   will-change: transform;
 
@@ -65,7 +61,6 @@
 .banner {
 
   width: 100%;
-
   height: 160px;
 
   background: #ddd;
@@ -75,7 +70,6 @@
 .banner img {
 
   width: 100%;
-
   height: 100%;
 
   object-fit: cover;
@@ -93,7 +87,6 @@
   position: absolute;
 
   top: 136px;
-
   left: 24px;
 
   border-radius: 8px;
@@ -110,6 +103,7 @@
 
   width: 100%;
   height: 100%;
+
   object-fit: cover;
 
 }
@@ -122,11 +116,9 @@
   position: absolute;
 
   top: 214px;
-
   left: 24px;
 
   font-size: 20px;
-
   font-weight: 600;
 
   color: #111;
@@ -141,7 +133,6 @@
   position: absolute;
 
   top: 242px;
-
   left: 24px;
 
   font-size: 14px;
@@ -158,7 +149,6 @@
   position: absolute;
 
   top: 284px;
-
   left: 24px;
 
   width: calc(100% - 48px);
@@ -177,7 +167,6 @@
 .link {
 
   width: 100%;
-
   height: 46px;
 
   background: #f3f4f6;
@@ -240,40 +229,25 @@
 }
 
 
-/* MOBILE SCALING */
+/* CORRECT MOBILE SCALING */
 
-@media (max-width: 420px) {
+@media (max-width: 768px) {
 
   .scaleWrapper {
 
-    width: calc(100vw - 32px);
-    height: calc((100vw - 32px) * 1.72);
+    width: min(calc(100vw - 32px), calc((100dvh - 32px) / 1.72));
+    height: min(calc((100vw - 32px) * 1.72), calc(100dvh - 32px));
 
   }
 
   .card {
 
-    transform: scale(calc((100vw - 32px) / 400));
-
-  }
-
-}
-
-
-/* VERY SMALL DEVICES */
-
-@media (max-width: 340px) {
-
-  .scaleWrapper {
-
-    width: calc(100vw - 24px);
-    height: calc((100vw - 24px) * 1.72);
-
-  }
-
-  .card {
-
-    transform: scale(calc((100vw - 24px) / 400));
+    transform: scale(
+      min(
+        calc((100vw - 32px) / 400),
+        calc((100dvh - 32px) / 688)
+      )
+    );
 
   }
 
