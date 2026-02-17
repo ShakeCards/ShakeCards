@@ -5,10 +5,7 @@
   min-height: 100dvh;
   width: 100%;
 
-  display: flex;
-
-  justify-content: center;   /* center horizontally */
-  align-items: flex-start;   /* start from top so page can scroll */
+  display: block; /* FIX: remove flex */
 
   background: #1c1c1e;
 
@@ -18,14 +15,15 @@
 }
 
 
-/* SCALE WRAPPER (no scaling anymore) */
+/* SCALE WRAPPER */
 
 .scaleWrapper {
 
   width: 400px;
   height: 688px;
 
-  display: block;
+  margin-left: auto;   /* center horizontally */
+  margin-right: auto;
 
 }
 
