@@ -13,7 +13,9 @@
 
   background: #1c1c1e;
 
-  overflow: hidden;
+  /* FIX: allow proper rendering while preventing horizontal overflow */
+  overflow-x: hidden;
+  overflow-y: auto;
 
 }
 
@@ -30,6 +32,8 @@
   align-items: center;
 
   justify-content: center;
+
+  flex-shrink: 0;
 
 }
 
@@ -235,8 +239,15 @@
 
   .scaleWrapper {
 
-    width: min(calc(100vw - 32px), calc((100dvh - 32px) / 1.72));
-    height: min(calc((100vw - 32px) * 1.72), calc(100dvh - 32px));
+    width: min(
+      calc(100vw - 32px),
+      calc((100dvh - 32px) / 1.72)
+    );
+
+    height: min(
+      calc((100vw - 32px) * 1.72),
+      calc(100dvh - 32px)
+    );
 
   }
 
