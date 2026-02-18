@@ -86,7 +86,7 @@ export default function ProfileCard({ profile }: Props) {
    */
   function renderIcon(icon?: string) {
 
-    const size = 19;
+    const size = 20;
 
     switch (icon) {
 
@@ -129,7 +129,7 @@ export default function ProfileCard({ profile }: Props) {
    */
   function renderSocialIcon(icon?: string) {
 
-    const size = 22;
+    const size = 26;
 
     switch (icon) {
 
