@@ -12,4 +12,10 @@ export type Profile = {
 
   organization_id: string | null;
 
+  instagram_url: string | null;
+
+  linkedin_url: string | null;
+
+  email: string | null;
+
 };

@@ -10,6 +10,11 @@ type Profile = {
   profile_image_url: string | null;
   banner_image_url: string | null;
   organization_id: string | null;
+
+  // NEW — required for social icons
+  instagram_url: string | null;
+  linkedin_url: string | null;
+  email: string | null;
 };
 
 export default async function Page({
@@ -26,6 +31,7 @@ export default async function Page({
 
   /*
     Fetch card and joined profile
+    UPDATED to include new fields
   */
   const { data: card, error: cardError } = await supabase
     .from("cards")
@@ -37,7 +43,10 @@ export default async function Page({
         tagline,
         profile_image_url,
         banner_image_url,
-        organization_id
+        organization_id,
+        instagram_url,
+        linkedin_url,
+        email
       )
     `)
     .eq("card_id", cardId)
@@ -96,7 +105,7 @@ export default async function Page({
   }
 
   /*
-    Fetch personal links
+    Fetch personal links (optional future system)
   */
   const { data: links } = await supabase
     .from("links")
@@ -111,7 +120,7 @@ export default async function Page({
     .order("sort_order", { ascending: true });
 
   /*
-    Fetch organization links
+    Fetch organization links (optional future system)
   */
   const { data: organizationLinks } = await supabase
     .from("organization_links")
